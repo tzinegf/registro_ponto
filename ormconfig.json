@@ -1,0 +1,16 @@
+{
+    "type": "mysql",
+    "database": "registro_ponto",
+    "migrations" : ["./src/database/migrations/**.ts"],
+    "entities":["./src/entities/**.ts"],
+    "host": "localhost",
+    "port": 3306,
+    "username": "root",
+    "password": "12345678",
+    "cli":{
+    "migrationsDir" : "./src/database/migrations",
+    "insecureAuth": true
+    
+    }
+   
+}

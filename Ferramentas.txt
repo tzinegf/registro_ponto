@@ -1,0 +1,38 @@
+Ferramentas
+Node,
+Express,
+Typescript:
+	ts-node-dev
+TypeORM
+
+
+sql querys
+///////////////////////////////////////////////////////////
+
+insert User
+
+{
+"cod_matricula":10234567890,
+"nome":"Edson Gomes",
+"cpf":"10916095606",
+"cargo":"Analista de sistemas",
+"rua":"Jose Luiz Pego",
+"bairro":"Centro",
+"cidade":"Malacacheta",
+"hora_ini_expediente":"2021-05-02T18:32:47.772Z",
+"hora_fim_expediente":"2021-05-02T18:32:47.772Z",
+"hora_fim_almoco":"2021-05-02T18:32:47.772Z",
+"hora_ini_almoco":"2021-05-02T18:32:47.772Z"
+}
+///////////////////////////////////////////////////////////
+insert Expediente
+
+{
+"id":null,
+"user_id":6,
+"hora_ini_expediente":"2021-05-02T18:32:47.772Z",
+"hora_fim_expediente":"2021-05-02T18:32:47.772Z",
+"hora_fim_almoco":"2021-05-02T18:32:47.772Z",
+"hora_ini_almoco":"2021-05-02T18:32:47.772Z"
+}
+

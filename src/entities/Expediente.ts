@@ -1,0 +1,32 @@
+import { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn } from 'typeorm'
+import { User } from './User';
+@Entity('expedientes')
+class Expediente {
+
+    @PrimaryColumn()
+    id: number;
+
+    @Column()
+    hora_ini_expediente: Date;
+
+    @Column()
+    hora_ini_almoco: Date;
+
+    @Column()
+    hora_fim_almoco: Date;
+
+    @Column()
+    hora_fim_expediente: Date;
+
+    @JoinColumn({name:"user_id"})
+    @ManyToOne(() => User)
+    user: User
+
+    @Column()
+    user_id: number;
+
+
+
+}
+
+export { Expediente }
