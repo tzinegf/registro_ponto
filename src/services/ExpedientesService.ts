@@ -1,4 +1,5 @@
-import { getCustomRepository } from "typeorm"
+import { getCustomRepository, Repository } from "typeorm"
+import { Expediente } from "../entities/Expediente";
 import { ExpedienteRepository } from "../repositories/ExpedienteRepository"
 
 interface IexpedienteCreate {
@@ -10,9 +11,16 @@ interface IexpedienteCreate {
 }
 class ExpedientesService {
 
+    private expedientesRepository: Repository<Expediente>
+
+    constructor(){
+        this.expedientesRepository = getCustomRepository(ExpedienteRepository)
+
+    }
+
     async create({ hora_fim_almoco, hora_ini_almoco, hora_fim_expediente, hora_ini_expediente, user_id }: IexpedienteCreate) {
-        const expedientesRepository = getCustomRepository(ExpedienteRepository);
-        const expediente = expedientesRepository.create({
+        
+        const expediente = this.expedientesRepository.create({
             hora_fim_almoco,
             hora_ini_almoco,
             hora_fim_expediente,
@@ -20,14 +28,13 @@ class ExpedientesService {
             user_id
 
         });
-        await expedientesRepository.save(expediente);
+        await this.expedientesRepository.save(expediente);
         return expediente;
     }
 
     async listByUser(user_id: number) {
-        const expedientesRepository = getCustomRepository(ExpedienteRepository);
 
-        const list = await expedientesRepository.find({
+        const list = await this.expedientesRepository.find({
             where: { user_id },
             relations: ['user']
         }

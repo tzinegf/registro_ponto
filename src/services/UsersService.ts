@@ -1,4 +1,5 @@
-import { getCustomRepository } from 'typeorm'
+import { getCustomRepository, Repository } from 'typeorm'
+import { User } from '../entities/User';
 import { UserRepository } from '../repositories/UserRepository';
 
 
@@ -18,24 +19,28 @@ interface IuserCreate {
     hora_fim_expediente: Date
     hora_ini_expediente: Date;
     ativo?: boolean;
-
 }
 
-
 class UserService {
+    private userRepository: Repository<User>
+
+    constructor(){
+        this.userRepository = getCustomRepository(UserRepository)
+
+    }
+
     async create({id,cod_matricula, nome, cpf, cargo, rua, bairro, cidade, hora_fim_almoco, hora_ini_almoco, hora_fim_expediente, hora_ini_expediente }: IuserCreate) {
 
-        const userRepository = getCustomRepository(UserRepository);
 
         // verifica se o email ja existe
-        const userAlreadyExists = await userRepository.findOne({
+        const userAlreadyExists = await this.userRepository.findOne({
             cod_matricula
         })
         // se exixtir retorna o contato
         if (userAlreadyExists) {
             throw new Error("Usuario ja cadastrado!")
         }
-        const users = userRepository.create({
+        const users = this.userRepository.create({
             id,
             cod_matricula,
             nome,
@@ -49,15 +54,8 @@ class UserService {
             hora_fim_almoco,
             hora_ini_almoco,
         });
-        await userRepository.save(users);
+        await this.userRepository.save(users);
         return users;
-
-
-
-
-
     }
-
-
 }
 export { UserService };
