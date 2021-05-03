@@ -1,5 +1,4 @@
-import { Entity, Column, CreateDateColumn, UpdateDateColumn, PrimaryColumn } from "typeorm";
-
+import { Entity, Column, CreateDateColumn, UpdateDateColumn, PrimaryColumn, OneToOne, JoinColumn } from "typeorm";
 @Entity("users")
 class User {
 
@@ -28,6 +27,12 @@ class User {
     cidade: string;
 
     @Column()
+    telefone1: string;
+
+    @Column()
+    telefone2: string
+
+    @Column()
     ativo: boolean;
 
     @Column()
@@ -47,7 +52,6 @@ class User {
 
     @CreateDateColumn()
     created_at: Date;
-
     constructor() {
 
 

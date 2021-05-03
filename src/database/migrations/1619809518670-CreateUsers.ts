@@ -10,9 +10,9 @@ export class CreateUsers1619809518670 implements MigrationInterface {
                     name: 'id',
                     type: 'int',
                     isPrimary: true,
-                    isGenerated:true,
+                    isGenerated: true,
                     generationStrategy: 'increment',
-                    
+
                 },
                 {
                     name: 'cod_matricula',
@@ -28,7 +28,7 @@ export class CreateUsers1619809518670 implements MigrationInterface {
                     type: 'varchar',
 
                 },
-                 {
+                {
                     name: 'cargo',
                     type: 'varchar',
 
@@ -45,6 +45,15 @@ export class CreateUsers1619809518670 implements MigrationInterface {
                 {
                     name: 'cidade',
                     type: 'varchar',
+                },
+                {
+
+                    name: 'telefone1',
+                    type: 'varchar'
+                }, {
+
+                    name: 'telefone2',
+                    type: 'varchar'
                 },
                 {
                     name: 'ativo',
