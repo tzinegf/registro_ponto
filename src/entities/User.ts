@@ -36,26 +36,23 @@ class User {
     ativo: boolean;
 
     @Column()
-    hora_ini_expediente: Date;
+    hora_ini_expediente: String;
 
     @Column()
-    hora_ini_almoco: Date;
+    hora_ini_almoco: String;
 
     @Column()
-    hora_fim_almoco: Date;
+    hora_fim_almoco: String;
 
     @Column()
-    hora_fim_expediente: Date;
+    hora_fim_expediente: String;
 
     @UpdateDateColumn()
     updated_at: Date;
 
     @CreateDateColumn()
     created_at: Date;
-    constructor() {
-
-
-    }
+  
 }
 
 export { User };

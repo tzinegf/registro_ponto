@@ -6,7 +6,7 @@ export class CreateExpediente1619886285936 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createTable(
             new Table({
-                name: 'expedientes',
+                name: 'registros',
                 columns: [
                     {
                         name: 'id',
@@ -20,21 +20,41 @@ export class CreateExpediente1619886285936 implements MigrationInterface {
                         type: "int",
                     },
                     {
+                        name:'count_times',
+                        type:'int',
+                        isNullable:true
+
+                    },
+                    {
                         name: 'hora_ini_expediente',
-                        type: "timestamp",
+                        type: "Datetime",
+                        isNullable:true
                     },
                     {
                         name: 'hora_ini_almoco',
-                        type: "timestamp",
+                        type: "Datetime",
+                        isNullable:true
                     },
                     {
                         name: 'hora_fim_almoco',
-                        type: "timestamp",
+                        type: "Datetime",
+                        isNullable:true
                     },
                     {
                         name: 'hora_fim_expediente',
-                        type: "timestamp",
-                    }
+                        type: "Datetime",
+                        isNullable:true
+                    },
+                    {
+                        name: 'end_of_day',
+                        type: "boolean",
+                        default: false
+                    },
+                    {
+                        name: 'created_at',
+                        type: 'timestamp',
+                        default: 'now()',
+                    },
                 ],
                 foreignKeys:[
                     {
@@ -45,7 +65,6 @@ export class CreateExpediente1619886285936 implements MigrationInterface {
                         onDelete:'CASCADE',
                         onUpdate:'CASCADE'
                         
-
                 }
             ]
                 
@@ -57,7 +76,7 @@ export class CreateExpediente1619886285936 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable('expedientes')
+        await queryRunner.dropTable('registros')
     }
 
 }

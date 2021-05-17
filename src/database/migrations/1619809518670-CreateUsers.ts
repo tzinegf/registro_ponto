@@ -58,23 +58,23 @@ export class CreateUsers1619809518670 implements MigrationInterface {
                 {
                     name: 'ativo',
                     type: 'boolean',
-                    default: true,
+    
                 },
                 {
                     name: 'hora_ini_expediente',
-                    type: "timestamp",
+                    type: 'time',
                 },
                 {
                     name: 'hora_ini_almoco',
-                    type: "timestamp",
+                    type: 'time'
                 },
                 {
                     name: 'hora_fim_almoco',
-                    type: "timestamp",
+                    type: 'time',
                 },
                 {
                     name: 'hora_fim_expediente',
-                    type: "timestamp",
+                    type: 'time',
                 },
                 {
                     name: 'updated_at',
@@ -85,7 +85,8 @@ export class CreateUsers1619809518670 implements MigrationInterface {
                     name: 'created_at',
                     type: 'timestamp',
                     default: 'now()',
-                }
+                },
+            
 
                 ]
 

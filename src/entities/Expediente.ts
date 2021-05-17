@@ -1,6 +1,6 @@
-import { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn } from 'typeorm'
+import { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn, CreateDateColumn } from 'typeorm'
 import { User } from './User';
-@Entity('expedientes')
+@Entity('registros')
 class Expediente {
 
     @PrimaryColumn()
@@ -8,6 +8,9 @@ class Expediente {
 
     @Column()
     hora_ini_expediente: Date;
+
+    @Column()
+    count_times: number;
 
     @Column()
     hora_ini_almoco: Date;
@@ -18,7 +21,13 @@ class Expediente {
     @Column()
     hora_fim_expediente: Date;
 
-    @JoinColumn({name:"user_id"})
+    @CreateDateColumn()
+    created_at: Date;
+
+    @CreateDateColumn()
+    end_of_day: boolean;
+
+    @JoinColumn({ name: "user_id" })
     @ManyToOne(() => User)
     user: User
 
