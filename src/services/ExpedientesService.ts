@@ -15,52 +15,44 @@ class ExpedientesService {
 
     }
 
-    async create({ id, hora_ini_expediente, count_times, created_at, hora_ini_almoco, hora_fim_almoco, hora_fim_expediente, end_of_day, cod_matricula }) {
+    async create({ id, hora_ini_expediente, count_times, created_at, hora_ini_almoco, hora_fim_almoco, hora_fim_expediente, cod_matricula }) {
 
         const user_cod = await this.userRepository.createQueryBuilder('users')
             .where("cod_matricula= :cod_matricula", { cod_matricula: cod_matricula })
             .getOne();
 
+
         if (user_cod != undefined) {
 
             const user_id = user_cod.id
 
-            const count = await this.expedientesRepository.
+            const reg = await this.expedientesRepository.
                 createQueryBuilder("registros")
                 .where("user_id = :user_id", { user_id: user_id })
+                .andWhere(" DATE_FORMAT(created_at, '%Y-%m-%d') = CURDATE()")
                 .getOne();
 
-            const day = count.created_at.getDate()
+            /*const day = reg.created_at.getDate()
             const newDate = new Date(created_at);
-            const day2 = newDate.getDate();
-
-            if (day == day2) {
-                if (count == undefined || (count.count_times == 0 && count.end_of_day == false)) {
-                    var expediente = this.expedientesRepository.createQueryBuilder()
-                        .insert()
-                        .into(Expediente)
-                        .values({ user_id: user_id, id: id, hora_ini_expediente: hora_ini_expediente, count_times: 1, created_at: created_at, end_of_day: end_of_day })
-                        .execute()
-
-                    return "1";
+            const day2 = newDate.getDate();*/
 
 
-                } else {
+            if (reg != undefined) {
+                return this.updateExpediente({ user_id, id, hora_ini_almoco, hora_fim_almoco, hora_fim_expediente, count_times, created_at });
+            } else {
 
-                    return this.updateExpediente({ user_id, id, hora_ini_almoco, hora_fim_almoco, hora_fim_expediente, count_times, created_at, end_of_day });
+                var expediente = this.expedientesRepository.createQueryBuilder()
+                    .insert()
+                    .into(Expediente)
+                    .values({ user_id: user_id, id: id, hora_ini_expediente: hora_ini_expediente, count_times: 1, created_at: created_at })
+                    .execute()
 
-
-                }
+                return "1";
 
             }
-            else {
-                return 'Todos os pontos já foram registrados na data atual!'
-            }
-
-
 
         } else {
-            return 'usuário não encontrado!'
+            return 'Usuário não encontrado!'
         }
 
 
@@ -70,52 +62,39 @@ class ExpedientesService {
 
     }
 
-    async updateExpediente({ user_id, id, hora_ini_almoco, hora_fim_almoco, hora_fim_expediente, count_times, created_at, end_of_day }) {
-
-        const count = await this.expedientesRepository.
-            createQueryBuilder("registros")
-            .where("user_id = :user_id", { user_id: user_id })
-            .andWhere("count_times = :count_times", { count_times: count_times })
-            .getOne();
-
-        if (count != undefined && count.end_of_day == false) {
-            const day = count.created_at.getDate()
-            const newDate = new Date(created_at);
-            const day2 = newDate.getDate();
-
-            if (day == day2 && count.hora_fim_expediente == null && count.end_of_day == false) {
-
-                if (count.count_times == 1) {
-
-                    await this.expedientesRepository.createQueryBuilder()
-                        .update(Expediente)
-                        .set({ count_times: 2, hora_ini_almoco: hora_ini_almoco })
-                        .andWhere("user_id = :user_id ", { user_id: user_id })
-                        .execute();
-                    return "2";
+    async updateExpediente({ user_id, id, hora_ini_almoco, hora_fim_almoco, hora_fim_expediente, count_times, created_at }) {
 
 
-                } else if (count.count_times == 2) {
-                    await this.expedientesRepository.createQueryBuilder()
-                        .update(Expediente)
-                        .set({ count_times: 3, hora_fim_almoco: hora_fim_almoco })
-                        .where("user_id = :user_id ", { user_id: user_id })
-                        .execute();
-                    return "3"
+        console.log(hora_ini_almoco);
+        if (count_times != 0) {
 
-                } else if (count.count_times == 3) {
-                    await this.expedientesRepository.createQueryBuilder()
-                        .update(Expediente)
-                        .set({ count_times: 0, hora_fim_expediente: hora_fim_expediente, end_of_day: end_of_day })
-                        .where("user_id = :user_id", { user_id: user_id })
-                        .execute();
-                    return "0"
+            if (count_times == 1) {
 
-                }
+                await this.expedientesRepository.createQueryBuilder()
+                    .update(Expediente)
+                    .set({ count_times: 2, hora_ini_almoco: hora_ini_almoco })
+                    .andWhere("user_id = :user_id ", { user_id: user_id })
+                    .execute();
+
+                return "2";
 
 
-            } else {
-                return ('Todos os pontos já foram registrados na data atual')
+            } else if (count_times == 2) {
+                await this.expedientesRepository.createQueryBuilder()
+                    .update(Expediente)
+                    .set({ count_times: 3, hora_fim_almoco: hora_fim_almoco })
+                    .where("user_id = :user_id ", { user_id: user_id })
+                    .execute();
+                return "3"
+
+            } else if (count_times == 3) {
+                await this.expedientesRepository.createQueryBuilder()
+                    .update(Expediente)
+                    .set({ count_times: 0, hora_fim_expediente: hora_fim_expediente })
+                    .where("user_id = :user_id", { user_id: user_id })
+                    .execute();
+                return "4"
+
             }
         } else {
 
@@ -123,8 +102,32 @@ class ExpedientesService {
 
         }
 
+    }
 
 
+    async getCount(cod_matricula: String) {
+
+        const user_cod = await this.userRepository.createQueryBuilder('users')
+            .where("cod_matricula = :cod_matricula", { cod_matricula: cod_matricula })
+            .getOne();
+
+
+        if (user_cod != undefined) {
+
+            const user_id = user_cod.id
+
+            const count = await this.expedientesRepository.
+                createQueryBuilder("registros")
+                .where("user_id = :user_id", { user_id: user_id })
+                .andWhere(" DATE_FORMAT(created_at, '%Y-%m-%d') = CURDATE()")
+                .andWhere("hora_ini_almoco is NULL OR hora_fim_almoco is NULL OR hora_fim_expediente is NULL ")
+                .getOne();
+
+            return count;
+
+        } else {
+            return 'Usuário não encontrado!'
+        }
 
     }
 
@@ -134,8 +137,7 @@ class ExpedientesService {
     async listByUser(user_id: number) {
 
         const list = await this.expedientesRepository.find({
-            where: { user_id },
-            relations: ['user']
+            where: { user_id }
         }
 
         );
@@ -145,5 +147,20 @@ class ExpedientesService {
     }
 
 
+    async getRelatoryDay(hora_ini,hora_fim) {
+         const data = await this.userRepository.query("SELECT T1.nome, T1.user_id, T1.usuarioAtivo, IF(T1.idReg IS NOT NULL, 1, 0) AS existeRegistroPonto, T1.hora_ini, T1.hora_saida_intervalo, T1.hora_retorno_intervalo, T1.hora_saida, T1.horasTrab1Turno, T1.horasTrab2Turno, TIME(T1.horasTrab1Turno + T1.horasTrab2Turno) AS horasTrabTotais FROM(SELECT RG.id AS idReg, US.ativo AS usuarioAtivo, US.nome, US.id AS user_id, RG.hora_ini_expediente AS hora_ini, RG.hora_ini_almoco AS hora_saida_intervalo, RG.hora_fim_almoco AS hora_retorno_intervalo, RG.hora_fim_expediente AS hora_saida, IF(RG.hora_ini_almoco IS NOT NULL, TIMEDIFF(RG.hora_ini_almoco, RG.hora_ini_expediente), TIME('00:00:00')) AS horasTrab1Turno,IF(RG.hora_fim_expediente IS NOT NULL, TIMEDIFF(RG.hora_fim_expediente, RG.hora_fim_almoco), TIME('00:00:00')) AS horasTrab2Turno FROM users US LEFT JOIN registros RG ON RG.user_id = US.id AND RG.hora_ini_expediente BETWEEN ? AND ? WHERE 1) AS T1 HAVING usuarioAtivo = 1 OR (usuarioAtivo = 0 AND existeRegistroPonto = 1)",[hora_ini,hora_fim])
+         
+         return data
+
+    }
+
+
 }
+
+
+
+
+
+
+
 export { ExpedientesService }

@@ -24,8 +24,6 @@ class Expediente {
     @CreateDateColumn()
     created_at: Date;
 
-    @CreateDateColumn()
-    end_of_day: boolean;
 
     @JoinColumn({ name: "user_id" })
     @ManyToOne(() => User)
