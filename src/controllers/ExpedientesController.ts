@@ -49,6 +49,15 @@ class ExpedientesController {
         const list = await expedientesService.getRelatoryDay(hora_ini,hora_fim);
         return res.json(list);
     }
+    async getRelatoryMonth(req: Request, res: Response){
+        const {mes,ano} = req.body;
+        const {id} = req.params;
+
+
+        const expedientesService = new ExpedientesService();
+        const list = await expedientesService.getRelatoryMonth(id,mes,ano);
+        return res.json(list);
+    }
 /*
     async updateExpediente(req: Request, res: Response) {
         const { id, hora_ini_expediente, count_times,created_at} = req.body

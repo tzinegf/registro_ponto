@@ -3,8 +3,6 @@ import { getCustomRepository, Repository } from 'typeorm'
 import { User } from '../entities/User';
 import { UserRepository } from '../repositories/UserRepository';
 
-
-
 interface IuserCreate {
 
     id?: number;
@@ -32,7 +30,6 @@ class UserService {
         this.userRepository = getCustomRepository(UserRepository)
 
     }
-
     async create({ id, cod_matricula, nome, cpf, cargo, rua, bairro, cidade, telefone1, telefone2, hora_fim_almoco, hora_ini_almoco, hora_fim_expediente, hora_ini_expediente, ativo }: IuserCreate) {
 
 

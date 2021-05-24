@@ -11,11 +11,10 @@ routes.post('/createuser', userController.create);
 routes.get('/users', userController.listAllUsers);
 routes.get('/user/:id', userController.listUser);
 routes.patch('/edituser/:id', userController.editUser);
-
 routes.post('/newexpediente', expedienteController.create);
 routes.get('/count/:cod_matricula', expedienteController.getCount);
 routes.post('/relatoryday', expedienteController.getRelatoryDay);
-//routes.patch('/newexpediente/:user_id', expedienteController.updateExpediente);
+routes.post('/relatorymonth/:id', expedienteController.getRelatoryMonth);
 routes.get('/expedientes/:id', expedienteController.showByuser);
 
 export { routes };
