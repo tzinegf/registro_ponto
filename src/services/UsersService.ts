@@ -71,22 +71,11 @@ class UserService {
     async listAllUsers() {
 
         const list = await this.userRepository.find({
-            select: [
-                "id",
-                "ativo",
-                "cod_matricula",
-                "nome",
-                "cpf",
-                "cargo",
-                "rua",
-                "cidade",
-                "bairro",
-                "telefone1",
-                "telefone2",
-                "hora_ini_expediente",
-                "hora_fim_expediente",
-                "hora_fim_almoco",
-                "hora_ini_almoco",]
+            order: {
+                ativo: "DESC",
+                nome: "ASC",
+            }
+
         });
 
         return list;
